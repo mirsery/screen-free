@@ -1,6 +1,7 @@
-package com.mirsery.screenfree.widget
+package com.mirsery.screenfree.widget.simple
 
 import android.content.Context
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.media.MediaPlayer
 import android.util.Log
@@ -9,7 +10,11 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.VideoView
 import com.mirsery.screenfree.R
+import com.mirsery.screenfree.widget.FullScreenVideoView
 
+/*
+ * only support png/jpg or mp4
+ */
 class SimpleADWidget(context: Context) : LinearLayout(context) {
 
     private var imgView: ImageView = ImageView(this.context)
@@ -41,7 +46,7 @@ class SimpleADWidget(context: Context) : LinearLayout(context) {
                 setOnCompletionListener {
                     //循环播放
                     videoView.setBackgroundResource(R.mipmap.bg)
-                    playVideo()
+                    startPlayList()
                 }
 
                 setOnPreparedListener { mp ->
@@ -74,23 +79,46 @@ class SimpleADWidget(context: Context) : LinearLayout(context) {
 
     private fun defaultShow() {
         viewControl(0)
+        stopVideo()
         imgView.setImageResource(R.mipmap.admilk)
     }
 
-    fun playVideo() {
+    private fun playVideo(path:String) {
         viewControl(1)
-        if (videoView.isPlaying) {
-            videoView.pause()
-        }
-        videoView.setVideoPath("http://oss.hytiot.com/hytad1/afacsgo.mp4")
+        stopVideo()
+        videoView.setVideoPath(path)
         videoView.start()
     }
 
+    private fun playImg(path:String){
+        stopVideo()
+        viewControl(0)
+        imgView.setImageBitmap(BitmapFactory.decodeFile(path))
+    }
 
-    fun stopVideo() {
+
+    private fun stopVideo() {
         if (videoView.isPlaying) {
             videoView.stopPlayback()
         }
+    }
+
+     fun startPlayList(){
+        val simpleProgram = SimplePlayerList.nextProgram()
+
+        stopVideo()
+
+        simpleProgram?.let {
+            if(it.type ==0 ){
+                playImg(it.path)
+                handler.postDelayed({
+                    startPlayList()
+                },5 * 1000)
+            }else{
+                playVideo(it.path)
+            }
+        }
+        defaultShow()
     }
 
 }
