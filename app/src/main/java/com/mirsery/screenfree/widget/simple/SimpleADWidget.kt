@@ -11,6 +11,9 @@ import android.widget.LinearLayout
 import android.widget.VideoView
 import com.mirsery.screenfree.R
 import com.mirsery.screenfree.widget.FullScreenVideoView
+import java.util.concurrent.Executors
+import java.util.concurrent.ScheduledExecutorService
+import java.util.concurrent.TimeUnit
 
 /**
  * only support png/jpg or mp4
@@ -20,6 +23,8 @@ class SimpleADWidget(context: Context) : LinearLayout(context) {
     private var imgView: ImageView = ImageView(this.context)
 
     private var videoView: VideoView = FullScreenVideoView(this.context)
+
+    private var executorService:ScheduledExecutorService =  Executors.newScheduledThreadPool(1);
 
     init {
         addView(
@@ -76,19 +81,16 @@ class SimpleADWidget(context: Context) : LinearLayout(context) {
     }
 
 
-    private fun defaultShow() {
-        viewControl(0)
+    private fun playImg() {
         stopVideo()
+        viewControl(0)
         imgView.setImageResource(R.mipmap.admilk)
-        handler.postDelayed({
-            startPlayList()
-        }, 30 * 1000)
-        return
+        delayTask()
     }
 
     private fun playVideo(path: String) {
-        viewControl(1)
         stopVideo()
+        viewControl(1)
         videoView.setVideoPath(path)
         videoView.start()
     }
@@ -97,6 +99,7 @@ class SimpleADWidget(context: Context) : LinearLayout(context) {
         stopVideo()
         viewControl(0)
         imgView.setImageBitmap(BitmapFactory.decodeFile(path))
+        delayTask(5)
     }
 
 
@@ -109,22 +112,26 @@ class SimpleADWidget(context: Context) : LinearLayout(context) {
     fun startPlayList() {
         val simpleProgram = SimplePlayerList.nextProgram()
 
-        stopVideo()
-
-        when (simpleProgram?.type) {
-            0 -> {
-                playImg(simpleProgram.path)
-                handler.postDelayed({
-                    startPlayList()
-                }, 5 * 1000)
-                return
-            }
-            1 -> {
-                playVideo(simpleProgram.path)
-                return
+        if (simpleProgram == null) {
+            playImg()
+        } else {
+            when (simpleProgram.type) {
+                0 -> {
+                    playImg(simpleProgram.path)
+                }
+                1 -> {
+                    playVideo(simpleProgram.path)
+                }
             }
         }
-        defaultShow()
     }
+
+    private fun delayTask(time:Long=30){
+        executorService.schedule({
+            startPlayList()
+        },time,TimeUnit.SECONDS)
+    }
+
+
 
 }
