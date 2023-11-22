@@ -14,7 +14,7 @@ object SimplePlayerList {
 
     init {
         val f = File(resourcePath)
-        
+
         if(!f.exists()){
             f.mkdir()
         }
