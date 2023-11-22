@@ -39,7 +39,7 @@ class SimpleADWidget(context: Context) : LinearLayout(context) {
                 setOnErrorListener { _, what, _ ->
                     Log.e("player", what.toString())
                     videoView.stopPlayback()
-                    defaultShow()
+                    startPlayList()
                     true
                 }
 
@@ -50,7 +50,7 @@ class SimpleADWidget(context: Context) : LinearLayout(context) {
                 }
 
                 setOnPreparedListener { mp ->
-                    Log.i("player", "onPrepared");
+                    Log.i("player", "onPrepared")
                     mp.setOnInfoListener { _, what, _ ->
                         if (what == MediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START) {
                             videoView.setBackgroundColor(Color.TRANSPARENT)

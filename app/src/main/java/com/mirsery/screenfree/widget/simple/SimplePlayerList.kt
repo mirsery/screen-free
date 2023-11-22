@@ -14,13 +14,15 @@ object SimplePlayerList {
 
     init {
         val f = File(resourcePath)
-        if(f.exists()){
-            f.listFiles()?.forEach {
-                if (it.path.endsWith(".png") || it.path.endsWith(".jpg")) {
-                    playList.add( SimpleProgram(path = it.path, type = 0))
-                } else if (it.path.endsWith(".mp4")) {
-                    playList.add( SimpleProgram(path = it.path, type = 1))
-                }
+        
+        if(!f.exists()){
+            f.mkdir()
+        }
+        f.listFiles()?.forEach {
+            if (it.path.endsWith(".png") || it.path.endsWith(".jpg")) {
+                playList.add( SimpleProgram(path = it.path, type = 0))
+            } else if (it.path.endsWith(".mp4")) {
+                playList.add( SimpleProgram(path = it.path, type = 1))
             }
         }
     }
