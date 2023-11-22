@@ -80,6 +80,10 @@ class SimpleADWidget(context: Context) : LinearLayout(context) {
         viewControl(0)
         stopVideo()
         imgView.setImageResource(R.mipmap.admilk)
+        handler.postDelayed({
+            startPlayList()
+        }, 30 * 1000)
+        return
     }
 
     private fun playVideo(path: String) {
