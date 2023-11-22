@@ -21,7 +21,6 @@ class MainActivity : AppCompatActivity() {
             )
         )
         simpleADWidget.startPlayList()
-
     }
 
 }

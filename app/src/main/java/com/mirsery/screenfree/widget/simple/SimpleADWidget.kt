@@ -108,16 +108,19 @@ class SimpleADWidget(context: Context) : LinearLayout(context) {
 
         stopVideo()
 
-        simpleProgram?.let {
-            if(it.type ==0 ){
-                playImg(it.path)
-                handler.postDelayed({
-                    startPlayList()
-                },5 * 1000)
-            }else{
-                playVideo(it.path)
-            }
-        }
+         when (simpleProgram?.type) {
+             0 -> {
+                 playImg(simpleProgram.path)
+                 handler.postDelayed({
+                     startPlayList()
+                 },5 * 1000)
+                 return
+             }
+             1 -> {
+                 playVideo(simpleProgram.path)
+                 return
+             }
+         }
         defaultShow()
     }
 

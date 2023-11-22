@@ -1,12 +1,11 @@
 package com.mirsery.screenfree.widget.simple
 
 import android.os.Environment
-import android.util.Log
 import java.io.File
 
 object SimplePlayerList {
 
-    private val resourcePath = Environment.getExternalStorageDirectory().path + "/ScreenFree"
+    private val resourcePath = Environment.getExternalStorageDirectory().absolutePath + "/ScreenFree"
 
 
     private var playList : MutableList<SimpleProgram> = ArrayList()
@@ -16,16 +15,11 @@ object SimplePlayerList {
     init {
         val f = File(resourcePath)
         if(f.exists()){
-            Log.i("simple", f.listFiles()?.size.toString())
-
-
-            f.listFiles()?.forEach { file ->
-                run {
-                    if (file.path.endsWith(".png") || file.path.endsWith(".jpg")) {
-                        playList.add( SimpleProgram(path = file.path, type = 0))
-                    } else if (file.path.endsWith(".mp4")) {
-                        playList.add( SimpleProgram(path = file.path, type = 1))
-                    }
+            f.listFiles()?.forEach {
+                if (it.path.endsWith(".png") || it.path.endsWith(".jpg")) {
+                    playList.add( SimpleProgram(path = it.path, type = 0))
+                } else if (it.path.endsWith(".mp4")) {
+                    playList.add( SimpleProgram(path = it.path, type = 1))
                 }
             }
         }
