@@ -13,6 +13,11 @@ object SimplePlayerList {
     private var cur = 0
 
     init {
+        this.refreshPlayList()
+    }
+
+    private fun refreshPlayList(){
+        playList.clear()
         val f = File(resourcePath)
 
         if(!f.exists()){
@@ -28,10 +33,14 @@ object SimplePlayerList {
     }
 
     fun nextProgram() : SimpleProgram? {
-        if(playList.size < 1)
+
+        if(playList.size < 1){
+            this.refreshPlayList()
             return null
+        }
 
         if( cur >= playList.size){
+            this.refreshPlayList()
             cur = 0
         }
         cur ++
