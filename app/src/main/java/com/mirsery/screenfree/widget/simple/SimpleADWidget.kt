@@ -12,7 +12,7 @@ import android.widget.VideoView
 import com.mirsery.screenfree.R
 import com.mirsery.screenfree.widget.FullScreenVideoView
 
-/*
+/**
  * only support png/jpg or mp4
  */
 class SimpleADWidget(context: Context) : LinearLayout(context) {
@@ -20,7 +20,6 @@ class SimpleADWidget(context: Context) : LinearLayout(context) {
     private var imgView: ImageView = ImageView(this.context)
 
     private var videoView: VideoView = FullScreenVideoView(this.context)
-
 
     init {
         addView(
@@ -83,14 +82,14 @@ class SimpleADWidget(context: Context) : LinearLayout(context) {
         imgView.setImageResource(R.mipmap.admilk)
     }
 
-    private fun playVideo(path:String) {
+    private fun playVideo(path: String) {
         viewControl(1)
         stopVideo()
         videoView.setVideoPath(path)
         videoView.start()
     }
 
-    private fun playImg(path:String){
+    private fun playImg(path: String) {
         stopVideo()
         viewControl(0)
         imgView.setImageBitmap(BitmapFactory.decodeFile(path))
@@ -103,24 +102,24 @@ class SimpleADWidget(context: Context) : LinearLayout(context) {
         }
     }
 
-     fun startPlayList(){
+    fun startPlayList() {
         val simpleProgram = SimplePlayerList.nextProgram()
 
         stopVideo()
 
-         when (simpleProgram?.type) {
-             0 -> {
-                 playImg(simpleProgram.path)
-                 handler.postDelayed({
-                     startPlayList()
-                 },5 * 1000)
-                 return
-             }
-             1 -> {
-                 playVideo(simpleProgram.path)
-                 return
-             }
-         }
+        when (simpleProgram?.type) {
+            0 -> {
+                playImg(simpleProgram.path)
+                handler.postDelayed({
+                    startPlayList()
+                }, 5 * 1000)
+                return
+            }
+            1 -> {
+                playVideo(simpleProgram.path)
+                return
+            }
+        }
         defaultShow()
     }
 
