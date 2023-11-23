@@ -29,6 +29,11 @@ class MainActivity : AppCompatActivity() {
         simpleADWidget.startPlayList()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+
+    }
+
     private fun customBottomUIMenu() {
         supportActionBar?.hide()
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE

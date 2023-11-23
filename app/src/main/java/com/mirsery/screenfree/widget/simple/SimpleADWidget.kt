@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.media.MediaPlayer
 import android.os.Handler
 import android.os.Looper
+import android.os.Parcelable
 import android.util.Log
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -151,5 +152,8 @@ class SimpleADWidget(context: Context) : LinearLayout(context) {
         }, time, TimeUnit.SECONDS)
     }
 
-
+    override fun onSaveInstanceState(): Parcelable? {
+        executorService.shutdown()
+       return super.onSaveInstanceState()
+    }
 }
