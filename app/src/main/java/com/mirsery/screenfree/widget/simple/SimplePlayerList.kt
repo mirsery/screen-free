@@ -35,7 +35,7 @@ object SimplePlayerList {
     }
 
     fun nextProgram(): SimpleProgram? {
-        Log.i("simple_player", "cur is $cur")
+//        Log.i("simple_player", "cur is $cur")
         if (playList.size < 1) {
             this.refreshPlayList()
             return null

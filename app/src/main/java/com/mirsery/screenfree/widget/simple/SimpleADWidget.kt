@@ -4,6 +4,8 @@ import android.content.Context
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.media.MediaPlayer
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -24,7 +26,10 @@ class SimpleADWidget(context: Context) : LinearLayout(context) {
 
     private var videoView: VideoView = FullScreenVideoView(this.context)
 
-    private var executorService:ScheduledExecutorService =  Executors.newScheduledThreadPool(1);
+    private var executorService: ScheduledExecutorService = Executors.newScheduledThreadPool(1)
+
+    /**UI更新***/
+    private val uiHandler: Handler = Handler(Looper.getMainLooper())
 
     init {
         addView(
@@ -63,6 +68,7 @@ class SimpleADWidget(context: Context) : LinearLayout(context) {
                     }
                 }
             })
+
     }
 
     private fun viewControl(i: Int = 0) {
@@ -80,25 +86,37 @@ class SimpleADWidget(context: Context) : LinearLayout(context) {
         }
     }
 
+    private fun updateUI(action: () -> Unit) {
+        uiHandler.post { action.invoke() }
+    }
 
     private fun playImg() {
-        stopVideo()
-        viewControl(0)
-        imgView.setImageResource(R.mipmap.admilk)
+        updateUI {
+            stopVideo()
+            viewControl(0)
+            imgView.setImageResource(R.mipmap.admilk)
+        }
         delayTask()
+
     }
 
     private fun playVideo(path: String) {
-        stopVideo()
-        viewControl(1)
-        videoView.setVideoPath(path)
-        videoView.start()
+        updateUI {
+            stopVideo()
+            viewControl(1)
+            videoView.setVideoPath(path)
+            videoView.start()
+        }
     }
 
     private fun playImg(path: String) {
-        stopVideo()
-        viewControl(0)
-        imgView.setImageBitmap(BitmapFactory.decodeFile(path))
+        try {
+            stopVideo()
+            viewControl(0)
+            updateUI { imgView.setImageBitmap(BitmapFactory.decodeFile(path)) }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
         delayTask(5)
     }
 
@@ -119,6 +137,7 @@ class SimpleADWidget(context: Context) : LinearLayout(context) {
                 0 -> {
                     playImg(simpleProgram.path)
                 }
+
                 1 -> {
                     playVideo(simpleProgram.path)
                 }
@@ -126,12 +145,11 @@ class SimpleADWidget(context: Context) : LinearLayout(context) {
         }
     }
 
-    private fun delayTask(time:Long=30){
+    private fun delayTask(time: Long = 30) {
         executorService.schedule({
             startPlayList()
-        },time,TimeUnit.SECONDS)
+        }, time, TimeUnit.SECONDS)
     }
-
 
 
 }
