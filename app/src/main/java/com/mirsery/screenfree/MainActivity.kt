@@ -13,12 +13,14 @@ import com.mirsery.screenfree.widget.simple.SimpleADWidget
 
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var simpleADWidget : SimpleADWidget
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         customBottomUIMenu();
         setContentView(R.layout.activity_main)
-        val simpleADWidget = SimpleADWidget(this)
+        simpleADWidget = SimpleADWidget(this)
         addContentView(
             simpleADWidget,
             LinearLayout.LayoutParams(
@@ -30,8 +32,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
+        simpleADWidget.emptyTask()
         super.onDestroy()
+    }
 
+    override fun onPause() {
+        super.onPause()
+        simpleADWidget.emptyTask()
+        finish()
     }
 
     private fun customBottomUIMenu() {

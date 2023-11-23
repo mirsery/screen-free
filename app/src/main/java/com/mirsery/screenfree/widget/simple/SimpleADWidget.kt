@@ -152,8 +152,7 @@ class SimpleADWidget(context: Context) : LinearLayout(context) {
         }, time, TimeUnit.SECONDS)
     }
 
-    override fun onSaveInstanceState(): Parcelable? {
+    fun emptyTask(){
         executorService.shutdown()
-       return super.onSaveInstanceState()
     }
 }
