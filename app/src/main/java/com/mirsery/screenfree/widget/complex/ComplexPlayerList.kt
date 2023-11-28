@@ -1,16 +1,17 @@
-package com.mirsery.screenfree.widget.simple
+package com.mirsery.screenfree.widget.complex
 
 import android.os.Environment
 import com.mirsery.screenfree.widget.program.SimpleProgram
+import com.mirsery.screenfree.widget.program.StandProgram
 import java.io.File
 
-object SimplePlayerList {
+object  ComplexPlayerList {
 
     private val resourcePath =
         Environment.getExternalStorageDirectory().absolutePath + "/ScreenFree"
 
 
-    private var playList: MutableList<SimpleProgram> = ArrayList()
+    private var playList: MutableList<StandProgram> = ArrayList()
 
     private var cur = 0
 
@@ -27,14 +28,22 @@ object SimplePlayerList {
         }
         f.listFiles()?.forEach {
             if (it.path.endsWith(".png") || it.path.endsWith(".jpg")) {
-                playList.add(SimpleProgram(path = it.path, type = 0))
+
+                val map :MutableMap<String,SimpleProgram> = HashMap()
+                map["A"] = SimpleProgram(path = it.path, type = 0)
+                map["B"] = SimpleProgram(path = it.path, type = 0)
+
+                playList.add(StandProgram("ORow2ColTemplate",map))
+
             } else if (it.path.endsWith(".mp4")) {
-                playList.add(SimpleProgram(path = it.path, type = 1))
+                val map :MutableMap<String,SimpleProgram> = HashMap()
+                map["A"] = SimpleProgram(path = it.path, type = 1)
+                playList.add(StandProgram("singleTemplate",map))
             }
         }
     }
 
-    fun nextProgram(): SimpleProgram? {
+    fun nextProgram(): StandProgram? {
 //        Log.i("simple_player", "cur is $cur")
         if (playList.size < 1) {
             this.refreshPlayList()
@@ -48,5 +57,5 @@ object SimplePlayerList {
         cur++
         return playList[cur - 1]
     }
-
 }
+

@@ -12,7 +12,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.VideoView
 import com.mirsery.screenfree.R
-import com.mirsery.screenfree.widget.simple.SimpleProgram
+import com.mirsery.screenfree.widget.program.SimpleProgram
 
 /**
  * 广告容器
@@ -104,7 +104,7 @@ class StandADContainer(context: Context) : FrameLayout(context) {
         }
     }
 
-    fun playProgram(program: SimpleProgram,callback:()->Unit){
+    fun playProgram(program: SimpleProgram, callback:()->Unit){
         // 0 img 1 video
         when (program.type) {
             0 -> {
