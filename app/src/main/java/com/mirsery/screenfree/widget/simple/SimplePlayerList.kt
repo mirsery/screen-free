@@ -1,7 +1,6 @@
 package com.mirsery.screenfree.widget.simple
 
 import android.os.Environment
-import android.util.Log
 import java.io.File
 
 object SimplePlayerList {

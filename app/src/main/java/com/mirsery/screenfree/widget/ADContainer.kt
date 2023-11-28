@@ -6,7 +6,6 @@ import android.graphics.Color
 import android.media.MediaPlayer
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
@@ -38,8 +37,7 @@ class ADContainer(context: Context) : FrameLayout(context) {
             videoView.apply {
                 visibility = LinearLayout.GONE
                 setBackgroundResource(R.mipmap.bg)
-                setOnErrorListener { _, what, _ ->
-                    Log.e("player", what.toString())
+                setOnErrorListener { _, _, _ ->
                     videoView.stopPlayback()
                     true
                 }
@@ -60,21 +58,6 @@ class ADContainer(context: Context) : FrameLayout(context) {
             })
     }
 
-    private fun viewControl(i: Int = 0) {
-        // 0 img 1 video
-        when (i) {
-            0 -> {
-                imgView.visibility = LinearLayout.VISIBLE
-                videoView.visibility = LinearLayout.GONE
-            }
-
-            1 -> {
-                imgView.visibility = LinearLayout.GONE
-                videoView.visibility = LinearLayout.VISIBLE
-            }
-        }
-    }
-
     private fun updateUI(action: () -> Unit) {
         uiHandler.post { action.invoke() }
     }
@@ -86,33 +69,39 @@ class ADContainer(context: Context) : FrameLayout(context) {
         }
     }
 
-    private fun playImg(path: String) {
+    private fun playImg(path: String) : Long{
         updateUI {
             stopVideo()
-            viewControl(0)
+            imgView.visibility = LinearLayout.VISIBLE
+            videoView.visibility = LinearLayout.GONE
             imgView.setImageBitmap(BitmapFactory.decodeFile(path))
         }
+        return 5L
     }
 
-    private fun playVideo(path: String) {
+    private fun playVideo(path: String) : Long{
         updateUI {
             stopVideo()
-            viewControl(1)
+            imgView.visibility = LinearLayout.GONE
+            videoView.visibility = LinearLayout.VISIBLE
             videoView.setVideoPath(path)
             videoView.start()
         }
+        return videoView.duration.toLong()
     }
 
-    fun playProgram(program: SimpleProgram) {
+    fun playProgram(program: SimpleProgram):Long{
+        // 0 img 1 video
+        var time = 5L
         when (program.type) {
             0 -> {
-                playImg(program.path)
+              time =  playImg(program.path)
             }
-
             1 -> {
-                playVideo(program.path)
+               time = playVideo(program.path)
             }
         }
+        return time
     }
 
     fun stopAndReleaseResources() {
@@ -122,6 +111,18 @@ class ADContainer(context: Context) : FrameLayout(context) {
                 videoView.suspend()
             }
         }
+    }
+
+    fun hiddenALL() {
+        updateUI {
+            if (videoView.isPlaying) {
+                videoView.stopPlayback()
+                videoView.suspend()
+            }
+            imgView.visibility = LinearLayout.GONE
+            videoView.visibility = LinearLayout.GONE
+        }
+
     }
 
 
