@@ -1,4 +1,11 @@
 package com.mirsery.screenfree.widget.complex
 
-class CompexADWidget {
+import android.content.Context
+import android.widget.LinearLayout
+
+class ComplexADWidget (context: Context) : LinearLayout(context) {
+
+
+
+
 }
