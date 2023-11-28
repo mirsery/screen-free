@@ -6,7 +6,6 @@ import android.graphics.Color
 import android.media.MediaPlayer
 import android.os.Handler
 import android.os.Looper
-import android.os.Parcelable
 import android.util.Log
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -125,6 +124,7 @@ class SimpleADWidget(context: Context) : LinearLayout(context) {
     private fun stopVideo() {
         if (videoView.isPlaying) {
             videoView.stopPlayback()
+            videoView.suspend()
         }
     }
 
@@ -152,7 +152,8 @@ class SimpleADWidget(context: Context) : LinearLayout(context) {
         }, time, TimeUnit.SECONDS)
     }
 
-    fun emptyTask(){
+    fun suspendResource() {
+        stopVideo()
         executorService.shutdown()
     }
 }

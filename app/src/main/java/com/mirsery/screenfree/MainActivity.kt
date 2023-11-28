@@ -32,13 +32,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
-        simpleADWidget.emptyTask()
+        simpleADWidget.suspendResource()
         super.onDestroy()
     }
 
     override fun onPause() {
         super.onPause()
-        simpleADWidget.emptyTask()
+        simpleADWidget.suspendResource()
         finish()
     }
 
