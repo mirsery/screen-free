@@ -1,8 +1,11 @@
-package com.mirsery.screenfree.widget
+package com.mirsery.screenfree.widget.container
 
 import android.content.Context
 import android.widget.VideoView
 
+/**
+ * 全屏视频容器
+ * **/
 class FullScreenVideoView(context: Context) : VideoView(context){
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {

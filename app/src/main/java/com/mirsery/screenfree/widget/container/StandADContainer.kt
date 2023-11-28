@@ -1,4 +1,4 @@
-package com.mirsery.screenfree.widget
+package com.mirsery.screenfree.widget.container
 
 import android.content.Context
 import android.graphics.BitmapFactory
@@ -14,7 +14,11 @@ import android.widget.VideoView
 import com.mirsery.screenfree.R
 import com.mirsery.screenfree.widget.simple.SimpleProgram
 
-class ADContainer(context: Context) : FrameLayout(context) {
+/**
+ * 广告容器
+ * only support png/jpg or mp4
+ * **/
+class StandADContainer(context: Context) : FrameLayout(context) {
 
     private var imgView: ImageView = ImageView(context)
 
@@ -69,17 +73,16 @@ class ADContainer(context: Context) : FrameLayout(context) {
         }
     }
 
-    private fun playImg(path: String) : Long{
+    private fun playImg(path: String){
         updateUI {
             stopVideo()
             imgView.visibility = LinearLayout.VISIBLE
             videoView.visibility = LinearLayout.GONE
             imgView.setImageBitmap(BitmapFactory.decodeFile(path))
         }
-        return 5L
     }
 
-    private fun playVideo(path: String) : Long{
+    private fun playVideo(path: String){
         updateUI {
             stopVideo()
             imgView.visibility = LinearLayout.GONE
@@ -87,21 +90,35 @@ class ADContainer(context: Context) : FrameLayout(context) {
             videoView.setVideoPath(path)
             videoView.start()
         }
-        return videoView.duration.toLong()
     }
 
-    fun playProgram(program: SimpleProgram):Long{
+    fun playProgram(program: SimpleProgram){
         // 0 img 1 video
-        var time = 5L
         when (program.type) {
             0 -> {
-              time =  playImg(program.path)
+               playImg(program.path)
             }
             1 -> {
-               time = playVideo(program.path)
+               playVideo(program.path)
             }
         }
-        return time
+    }
+
+    fun playProgram(program: SimpleProgram,callback:()->Unit){
+        // 0 img 1 video
+        when (program.type) {
+            0 -> {
+                playImg(program.path)
+            }
+            1 -> {
+                playVideo(program.path)
+                videoView.setOnCompletionListener {
+                    videoView.setBackgroundResource(R.mipmap.bg)
+                    videoView.resume()   //循环播放
+                    callback()
+                }
+            }
+        }
     }
 
     fun stopAndReleaseResources() {

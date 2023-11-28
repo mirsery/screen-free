@@ -22,23 +22,23 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         simpleADWidget = SimpleADWidget(this)
         addContentView(
-            simpleADWidget,
+            simpleADWidget.container,
             LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT
             )
         )
-        simpleADWidget.startPlayList()
+        simpleADWidget.play()
     }
 
     override fun onDestroy() {
-        simpleADWidget.suspendResource()
+        simpleADWidget.stop()
         super.onDestroy()
     }
 
     override fun onPause() {
         super.onPause()
-        simpleADWidget.suspendResource()
+        simpleADWidget.stop()
         finish()
     }
 
