@@ -40,6 +40,10 @@ class StandADContainer(context: Context) : FrameLayout(context) {
         addView(
             videoView.apply {
                 visibility = LinearLayout.GONE
+                layoutParams = LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT
+                )
                 setBackgroundResource(R.mipmap.bg)
                 setOnErrorListener { _, _, _ ->
                     videoView.stopPlayback()
@@ -67,6 +71,7 @@ class StandADContainer(context: Context) : FrameLayout(context) {
     }
 
     private fun stopVideo() {
+        imgView.setImageBitmap(null)
         if (videoView.isPlaying) {
             videoView.stopPlayback()
             videoView.suspend()
@@ -117,12 +122,19 @@ class StandADContainer(context: Context) : FrameLayout(context) {
                     videoView.resume()   //循环播放
                     callback()
                 }
+
+                videoView.setOnErrorListener { _, _, _ ->
+                    videoView.stopPlayback()
+                    callback()
+                    true
+                }
             }
         }
     }
 
     fun stopAndReleaseResources() {
         updateUI {
+            imgView.setImageBitmap(null)
             if (videoView.isPlaying) {
                 videoView.stopPlayback()
                 videoView.suspend()

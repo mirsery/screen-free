@@ -12,7 +12,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.mirsery.screenfree.widget.complex.ComplexADWidget
 
 
-class MainActivity : AppCompatActivity() {
+class ADActivity : AppCompatActivity() {
 
 //    private lateinit var adWidget : SimpleADWidget
     private lateinit var adWidget: ComplexADWidget
@@ -37,12 +37,14 @@ class MainActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         adWidget.stop()
+        adWidget = null !!
         super.onDestroy()
     }
 
     override fun onPause() {
         super.onPause()
         adWidget.stop()
+        adWidget = null !!
         finish()
     }
 

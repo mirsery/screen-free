@@ -1,4 +1,4 @@
-package com.mirsery.screenfree.widget.simple
+package com.mirsery.screenfree.widget.playerList
 
 import android.os.Environment
 import com.mirsery.screenfree.widget.program.SimpleProgram
@@ -15,7 +15,7 @@ object SimplePlayerList {
     private var cur = 0
 
     init {
-        this.refreshPlayList()
+        refreshPlayList()
     }
 
     private fun refreshPlayList() {
@@ -37,12 +37,12 @@ object SimplePlayerList {
     fun nextProgram(): SimpleProgram? {
 //        Log.i("simple_player", "cur is $cur")
         if (playList.size < 1) {
-            this.refreshPlayList()
+            refreshPlayList()
             return null
         }
 
         if (cur >= playList.size) {
-            this.refreshPlayList()
+            refreshPlayList()
             cur = 0
         }
         cur++

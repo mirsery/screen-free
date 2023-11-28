@@ -1,6 +1,8 @@
-package com.mirsery.screenfree.widget.complex
+package com.mirsery.screenfree.widget.playerList
 
 import android.os.Environment
+import android.util.Log
+import com.mirsery.screenfree.widget.complex.ComplexType
 import com.mirsery.screenfree.widget.program.SimpleProgram
 import com.mirsery.screenfree.widget.program.StandProgram
 import java.io.File
@@ -16,7 +18,9 @@ object  ComplexPlayerList {
     private var cur = 0
 
     init {
-        this.refreshPlayList()
+        refreshPlayList()
+        Log.i("simple_player", "resource is $resourcePath")
+
     }
 
     private fun refreshPlayList() {
@@ -26,6 +30,8 @@ object  ComplexPlayerList {
         if (!f.exists()) {
             f.mkdir()
         }
+
+
         f.listFiles()?.forEach {
             if (it.path.endsWith(".png") || it.path.endsWith(".jpg")) {
 
@@ -33,25 +39,25 @@ object  ComplexPlayerList {
                 map["A"] = SimpleProgram(path = it.path, type = 0)
                 map["B"] = SimpleProgram(path = it.path, type = 0)
 
-                playList.add(StandProgram("ORow2ColTemplate",map))
+                playList.add(StandProgram(ComplexType.ORow2ColTemplate.toString(),5L,map))
 
             } else if (it.path.endsWith(".mp4")) {
                 val map :MutableMap<String,SimpleProgram> = HashMap()
                 map["A"] = SimpleProgram(path = it.path, type = 1)
-                playList.add(StandProgram("singleTemplate",map))
+                playList.add(StandProgram(ComplexType.SingleVerticalTemplate.toString(),40L,map))
             }
         }
     }
 
     fun nextProgram(): StandProgram? {
-//        Log.i("simple_player", "cur is $cur")
+
         if (playList.size < 1) {
-            this.refreshPlayList()
+            refreshPlayList()
             return null
         }
 
         if (cur >= playList.size) {
-            this.refreshPlayList()
+            refreshPlayList()
             cur = 0
         }
         cur++

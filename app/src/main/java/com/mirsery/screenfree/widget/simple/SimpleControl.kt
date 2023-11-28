@@ -1,6 +1,7 @@
 package com.mirsery.screenfree.widget.simple
 
 import com.mirsery.screenfree.widget.container.StandADContainer
+import com.mirsery.screenfree.widget.playerList.SimplePlayerList
 import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledExecutorService
 import java.util.concurrent.TimeUnit

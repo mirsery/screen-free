@@ -10,7 +10,7 @@
         tools:ignore="ScopedStorage" />
 
     <application
-        android:name=".BaseApplication"
+        android:name=".ScreenFree"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -22,7 +22,7 @@
         android:requestLegacyExternalStorage="true"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name=".ADActivity"
             android:exported="true">
 
             <intent-filter>

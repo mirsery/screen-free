@@ -2,8 +2,10 @@ package com.mirsery.screenfree.widget.complex
 
 import android.os.Handler
 import android.os.Looper
+import android.view.ViewGroup
 import android.widget.LinearLayout
 import com.mirsery.screenfree.widget.container.StandADContainer
+import com.mirsery.screenfree.widget.playerList.ComplexPlayerList
 import com.mirsery.screenfree.widget.program.StandProgram
 import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledExecutorService
@@ -38,55 +40,68 @@ class ComplexControl(
     private fun render() {
         updateUI {
             adWidget.removeAllViews()
-            stopAB()
-            adWidget.orientation = LinearLayout.HORIZONTAL
-            adWidget.addView(containerA)
+            stopAD()
+            adWidget.orientation = LinearLayout.VERTICAL
+            adWidget.addView(
+                containerA, ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT
+                )
+            )
         }
     }
 
     private fun render(program: StandProgram) {
         updateUI {
             adWidget.removeAllViews()
-            stopAB()
+            stopAD()
             when (program.theme) {
-                "singleTemplate" -> {
+                ComplexType.SingleTemplate.toString() -> {
                     adWidget.orientation = LinearLayout.HORIZONTAL
                     adWidget.addView(containerA)
-                    program.program["A"]?.let {
-                        if (it.type == 1) {
-                            containerA.playProgram(it) { startPlayer() }
-                        } else {
-                            containerA.playProgram(it)
-                            delayTask(5) { startPlayer() }
-                        }
-                    }
+                    program.program["A"]?.let { containerA.playProgram(it) }
                 }
 
-                "SingleVerticalTemplate" -> {
+                ComplexType.SingleVerticalTemplate.toString() -> {
                     adWidget.orientation = LinearLayout.VERTICAL
                     adWidget.addView(containerA)
-                    program.program["A"]?.let {
-                        containerA.playProgram(it)
-                        delayTask(5) { startPlayer() }
-                    }
+                    program.program["A"]?.let { containerA.playProgram(it) }
                 }
 
-                "ORow2ColTemplate" -> {
+                ComplexType.ORow2ColTemplate.toString() -> {
                     adWidget.orientation = LinearLayout.VERTICAL
-                    adWidget.addView(containerA)
-                    adWidget.addView(containerB)
+                    adWidget.addView(
+                        containerA, LinearLayout.LayoutParams(
+                            ViewGroup.LayoutParams.MATCH_PARENT, 0,
+                            1F
+                        )
+                    )
+                    adWidget.addView(
+                        containerB, LinearLayout.LayoutParams(
+                            ViewGroup.LayoutParams.MATCH_PARENT, 0,
+                            1F
+                        )
+                    )
                     program.program["A"]?.let { containerA.playProgram(it) }
                     program.program["B"]?.let { containerB.playProgram(it) }
-                    delayTask(5) { startPlayer() }
                 }
 
-                "TRowOColTemplate" -> {
+                ComplexType.TRowOColTemplate.toString() -> {
                     adWidget.orientation = LinearLayout.HORIZONTAL
-                    adWidget.addView(containerA)
-                    adWidget.addView(containerB)
+                    adWidget.addView(
+                        containerA, LinearLayout.LayoutParams(
+                            0, ViewGroup.LayoutParams.MATCH_PARENT,
+                            1F
+                        )
+                    )
+                    adWidget.addView(
+                        containerB, LinearLayout.LayoutParams(
+                            0, ViewGroup.LayoutParams.MATCH_PARENT,
+                            1F
+                        )
+                    )
                     program.program["A"]?.let { containerA.playProgram(it) }
                     program.program["B"]?.let { containerB.playProgram(it) }
-                    delayTask(5) { startPlayer() }
                 }
             }
         }
@@ -100,6 +115,7 @@ class ComplexControl(
             delayTask(30) { startPlayer() }
         } else {
             render(program)
+            delayTask(program.duration) { startPlayer() }
         }
     }
 
@@ -110,7 +126,7 @@ class ComplexControl(
         }, time, TimeUnit.SECONDS)
     }
 
-    private fun stopAB() {
+    private fun stopAD() {
         containerA.stopAndReleaseResources()
         containerB.stopAndReleaseResources()
     }
@@ -120,5 +136,7 @@ class ComplexControl(
         executorService.shutdown()
         containerA.stopAndReleaseResources()
         containerB.stopAndReleaseResources()
+        containerA = null !!
+        containerB = null !!
     }
 }
