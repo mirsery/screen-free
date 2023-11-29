@@ -11,6 +11,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.VideoView
 import com.bumptech.glide.Glide
+import com.mirsery.screenfree.R
 import com.mirsery.screenfree.widget.program.SimpleProgram
 
 /**
@@ -44,14 +45,14 @@ class StandADContainer(context: Context) : FrameLayout(context) {
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.MATCH_PARENT
                 )
-//                setBackgroundResource(R.mipmap.bg)
+                setBackgroundResource(R.mipmap.bg)
                 setOnErrorListener { _, _, _ ->
                     videoView.stopPlayback()
                     true
                 }
 
                 setOnCompletionListener {
-//                    videoView.setBackgroundResource(R.mipmap.bg)
+                    videoView.setBackgroundResource(R.mipmap.bg)
                     videoView.resume()   //循环播放
                 }
 
@@ -119,7 +120,7 @@ class StandADContainer(context: Context) : FrameLayout(context) {
             1 -> {
                 playVideo(program.path)
                 videoView.setOnCompletionListener {
-//                    videoView.setBackgroundResource(R.mipmap.bg)
+                    videoView.setBackgroundResource(R.mipmap.bg)
                     videoView.resume()   //循环播放
                     callback()
                 }

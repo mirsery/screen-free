@@ -50,7 +50,7 @@ object  ComplexPlayerList {
             } else if (it.path.endsWith(".mp4")) {
                 val map :MutableMap<String,SimpleProgram> = HashMap()
                 map["A"] = SimpleProgram(path = it.path, type = 1)
-                playList.add(StandProgram(ComplexType.SingleVerticalTemplate.toString(),40L,map))
+                playList.add(StandProgram(ComplexType.SingleVerticalTemplate.toString(),10L,map))
             }
         }
     }

@@ -39,8 +39,8 @@ class ComplexControl(
 
     private fun render() {
         updateUI {
-            adWidget.removeAllViews()
             stopAD()
+            adWidget.removeAllViews()
             adWidget.orientation = LinearLayout.VERTICAL
             adWidget.addView(
                 containerA, ViewGroup.LayoutParams(
@@ -53,18 +53,22 @@ class ComplexControl(
 
     private fun render(program: StandProgram) {
         updateUI {
-            adWidget.removeAllViews()
             stopAD()
+            adWidget.removeAllViews()
             when (program.theme) {
                 ComplexType.SingleTemplate.toString() -> {
                     adWidget.orientation = LinearLayout.HORIZONTAL
-                    adWidget.addView(containerA)
+                    adWidget.addView(containerA, LinearLayout.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT
+                    ))
                     program.program["A"]?.let { containerA.playProgram(it) }
                 }
 
                 ComplexType.SingleVerticalTemplate.toString() -> {
                     adWidget.orientation = LinearLayout.VERTICAL
-                    adWidget.addView(containerA)
+                    adWidget.addView(containerA, LinearLayout.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT
+                    ))
                     program.program["A"]?.let { containerA.playProgram(it) }
                 }
 
