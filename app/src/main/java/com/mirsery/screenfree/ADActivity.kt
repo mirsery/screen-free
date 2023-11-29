@@ -9,23 +9,23 @@ import android.view.WindowManager
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowInsetsCompat
-import com.mirsery.screenfree.widget.complex.ComplexADWidget
+import com.mirsery.screenfree.widget.simple.SimpleADWidget
 
 
 class ADActivity : AppCompatActivity() {
 
-//    private lateinit var adWidget : SimpleADWidget
-    private lateinit var adWidget: ComplexADWidget
+    private lateinit var adWidget: SimpleADWidget
+
+    //    private lateinit var adWidget: ComplexADWidget
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         customBottomUIMenu();
         setContentView(R.layout.activity_main)
 
-//        adWidget = SimpleADWidget(this)
-        adWidget = ComplexADWidget(this)
+        adWidget = SimpleADWidget(this)
+//        adWidget = ComplexADWidget(this)
         addContentView(
-//            adWidget.container,
             adWidget,
             LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
@@ -37,14 +37,14 @@ class ADActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         adWidget.stop()
-        adWidget = null !!
+        adWidget = null!!
         super.onDestroy()
     }
 
     override fun onPause() {
         super.onPause()
         adWidget.stop()
-        adWidget = null !!
+        adWidget = null!!
         finish()
     }
 
