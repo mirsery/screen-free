@@ -35,11 +35,17 @@ object  ComplexPlayerList {
         f.listFiles()?.forEach {
             if (it.path.endsWith(".png") || it.path.endsWith(".jpg")) {
 
-                val map :MutableMap<String,SimpleProgram> = HashMap()
-                map["A"] = SimpleProgram(path = it.path, type = 0)
-                map["B"] = SimpleProgram(path = it.path, type = 0)
+                val map1 :MutableMap<String,SimpleProgram> = HashMap()
+                map1["A"] = SimpleProgram(path = it.path, type = 0)
+                map1["B"] = SimpleProgram(path = it.path, type = 0)
 
-                playList.add(StandProgram(ComplexType.ORow2ColTemplate.toString(),5L,map))
+                playList.add(StandProgram(ComplexType.ORow2ColTemplate.toString(),5L,map1))
+
+                val map2 :MutableMap<String,SimpleProgram> = HashMap()
+                map2["A"] = SimpleProgram(path = it.path, type = 0)
+                map2["B"] = SimpleProgram(path = it.path, type = 0)
+
+                playList.add(StandProgram(ComplexType.TRowOColTemplate.toString(),5L,map2))
 
             } else if (it.path.endsWith(".mp4")) {
                 val map :MutableMap<String,SimpleProgram> = HashMap()

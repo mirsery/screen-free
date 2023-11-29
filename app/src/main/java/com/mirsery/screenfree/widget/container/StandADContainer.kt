@@ -1,7 +1,6 @@
 package com.mirsery.screenfree.widget.container
 
 import android.content.Context
-import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.media.MediaPlayer
 import android.os.Handler
@@ -11,7 +10,7 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.VideoView
-import com.mirsery.screenfree.R
+import com.bumptech.glide.Glide
 import com.mirsery.screenfree.widget.program.SimpleProgram
 
 /**
@@ -26,6 +25,7 @@ class StandADContainer(context: Context) : FrameLayout(context) {
 
     /**UI更新***/
     private val uiHandler: Handler = Handler(Looper.getMainLooper())
+
 
     init {
         addView(
@@ -44,14 +44,14 @@ class StandADContainer(context: Context) : FrameLayout(context) {
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.MATCH_PARENT
                 )
-                setBackgroundResource(R.mipmap.bg)
+//                setBackgroundResource(R.mipmap.bg)
                 setOnErrorListener { _, _, _ ->
                     videoView.stopPlayback()
                     true
                 }
 
                 setOnCompletionListener {
-                    videoView.setBackgroundResource(R.mipmap.bg)
+//                    videoView.setBackgroundResource(R.mipmap.bg)
                     videoView.resume()   //循环播放
                 }
 
@@ -71,23 +71,22 @@ class StandADContainer(context: Context) : FrameLayout(context) {
     }
 
     private fun stopVideo() {
-        imgView.setImageBitmap(null)
         if (videoView.isPlaying) {
             videoView.stopPlayback()
             videoView.suspend()
         }
     }
 
-    private fun playImg(path: String){
+    private fun playImg(path: String) {
         updateUI {
             stopVideo()
             imgView.visibility = LinearLayout.VISIBLE
             videoView.visibility = LinearLayout.GONE
-            imgView.setImageBitmap(BitmapFactory.decodeFile(path))
+            Glide.with(context).load(path).into(imgView)
         }
     }
 
-    private fun playVideo(path: String){
+    private fun playVideo(path: String) {
         updateUI {
             stopVideo()
             imgView.visibility = LinearLayout.GONE
@@ -97,28 +96,30 @@ class StandADContainer(context: Context) : FrameLayout(context) {
         }
     }
 
-    fun playProgram(program: SimpleProgram){
-        // 0 img 1 video
-        when (program.type) {
-            0 -> {
-               playImg(program.path)
-            }
-            1 -> {
-               playVideo(program.path)
-            }
-        }
-    }
-
-    fun playProgram(program: SimpleProgram, callback:()->Unit){
+    fun playProgram(program: SimpleProgram) {
         // 0 img 1 video
         when (program.type) {
             0 -> {
                 playImg(program.path)
             }
+
+            1 -> {
+                playVideo(program.path)
+            }
+        }
+    }
+
+    fun playProgram(program: SimpleProgram, callback: () -> Unit) {
+        // 0 img 1 video
+        when (program.type) {
+            0 -> {
+                playImg(program.path)
+            }
+
             1 -> {
                 playVideo(program.path)
                 videoView.setOnCompletionListener {
-                    videoView.setBackgroundResource(R.mipmap.bg)
+//                    videoView.setBackgroundResource(R.mipmap.bg)
                     videoView.resume()   //循环播放
                     callback()
                 }
@@ -134,7 +135,6 @@ class StandADContainer(context: Context) : FrameLayout(context) {
 
     fun stopAndReleaseResources() {
         updateUI {
-            imgView.setImageBitmap(null)
             if (videoView.isPlaying) {
                 videoView.stopPlayback()
                 videoView.suspend()
