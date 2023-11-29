@@ -1,6 +1,7 @@
 package com.mirsery.screenfree.widget.simple
 
 import android.content.Context
+import android.util.AttributeSet
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import com.mirsery.screenfree.widget.container.StandADContainer
@@ -8,9 +9,9 @@ import com.mirsery.screenfree.widget.container.StandADContainer
 /**
  * simple 模板框架
  */
-class SimpleADWidget(context: Context) : LinearLayout(context){
+class SimpleADWidget(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs) {
 
-    private var control:SimpleControl
+    private var control: SimpleControl
 
     var container: StandADContainer
 
@@ -18,10 +19,12 @@ class SimpleADWidget(context: Context) : LinearLayout(context){
         container = StandADContainer(context)
         control = SimpleControl()
         control.registerContainer(container)
-        addView(container,LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.MATCH_PARENT
-        ))
+        addView(
+            container, LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+            )
+        )
     }
 
 
@@ -33,7 +36,6 @@ class SimpleADWidget(context: Context) : LinearLayout(context){
     fun stop() {
         control.stop()
     }
-
 
 
 }

@@ -16,22 +16,13 @@ class ADActivity : AppCompatActivity() {
 
     private lateinit var adWidget: SimpleADWidget
 
-    //    private lateinit var adWidget: ComplexADWidget
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         customBottomUIMenu();
         setContentView(R.layout.activity_main)
 
-        adWidget = SimpleADWidget(this)
-//        adWidget = ComplexADWidget(this)
-        addContentView(
-            adWidget,
-            LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
-            )
-        )
+        adWidget = findViewById(R.id.ad_view)
         adWidget.play()
     }
 
