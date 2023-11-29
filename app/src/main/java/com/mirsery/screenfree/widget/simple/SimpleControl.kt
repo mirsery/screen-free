@@ -23,8 +23,8 @@ class SimpleControl {
         if (simpleProgram == null) {
             delayTask(30) { startSimplePlayer() }
         } else if(simpleProgram.type == 0) {
-            container?.playProgram(simpleProgram)
-            delayTask(5){ startSimplePlayer() }
+            container?.playProgram(simpleProgram) { delayTask(5) { startSimplePlayer() } }
+
         } else {
             container?.playProgram(simpleProgram) { startSimplePlayer() }
         }

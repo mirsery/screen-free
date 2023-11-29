@@ -115,6 +115,7 @@ class StandADContainer(context: Context) : FrameLayout(context) {
         when (program.type) {
             0 -> {
                 playImg(program.path)
+                callback()
             }
 
             1 -> {
