@@ -15,4 +15,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "screenfree"
 include(":app")
- 
+include(":openView")
+include(":demo")
